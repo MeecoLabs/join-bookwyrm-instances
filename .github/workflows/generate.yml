@@ -1,0 +1,26 @@
+name: Generate Instances JSON
+run-name: Generate Instances JSON
+on:
+  schedule:
+    - cron: '30 17 * * *'
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Generate JSON
+        run: python generate.py
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v9.1.1
+        with:
+          message: Updating instances json
+          committer_name: BookWyrm Automation
+          committer_email: bookwyrm-automation@meecolabs.eu
